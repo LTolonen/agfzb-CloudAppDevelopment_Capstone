@@ -38,10 +38,10 @@ def get_request(url, api_key=None, **kwargs):
 def post_request(url, json_payload, **kwargs):
     print(kwargs)
     print("POST to {} ".format(url))
-    try:
-        response = requests.post(url, json=json_payload, params=kwargs)
-    except:
-        print("Network exception occurred")
+    #try:
+    response = requests.post(url, json=json_payload, params=kwargs)
+    #except:
+       # print("Network exception occurred")
     status_code = response.status_code
     print("With status {} ".format(status_code))
     json_data = json.loads(response.text)
@@ -110,10 +110,12 @@ def analyze_review_sentiments(dealerreview):
 
     natural_language_understanding.set_service_url(url)
 
-    response = natural_language_understanding.analyze(
-        text = dealerreview,
-        features=Features(sentiment=SentimentOptions())).get_result()
-    
+    try:
+        response = natural_language_understanding.analyze(
+            text = dealerreview,
+            features=Features(sentiment=SentimentOptions())).get_result()
+    except:
+        return 0
     print(response)
     return response['sentiment']['document']['score']
 
